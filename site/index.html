@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compatibilità frigoriferi da incasso | Samsung F1rst</title>
+  <meta name="description" content="Scrivi il codice del tuo frigorifero da incasso e scopri quale Samsung F1rst lo sostituisce nella stessa nicchia.">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <a class="wordmark" href="./" aria-label="Samsung – torna all'inizio">SAMSUNG</a>
+      <nav class="topnav" aria-label="Sezioni">
+        <a href="#cerca">Verifica compatibilità</a>
+        <a href="#gamma">Gamma F1rst</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="cerca">
+      <div class="wrap">
+        <p class="eyebrow">Frigoriferi da incasso · F1rst</p>
+        <h1>Il tuo frigorifero da incasso può diventare un Samsung?</h1>
+        <p class="lead">Scrivi il codice modello del frigorifero attuale e scopri subito quale Samsung F1rst entra nella stessa nicchia.</p>
+
+        <form class="search" id="search-form" role="search" autocomplete="off">
+          <label for="q" class="sr-only">Codice modello del frigorifero attuale</label>
+          <div class="search-field">
+            <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+            <input id="q" name="q" type="search" inputmode="text" enterkeyhint="search"
+                   placeholder="Es. KIV86VS30" spellcheck="false" autocapitalize="characters"
+                   aria-describedby="q-hint" aria-controls="results">
+            <button type="button" class="clear" id="clear" hidden aria-label="Cancella il codice">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+          <p class="hint" id="q-hint">Il codice è sulla targhetta interna, di solito nel vano frigo. Basta anche solo una parte: ti mostriamo i modelli che corrispondono.</p>
+        </form>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+        <ul id="results" class="results" aria-label="Modelli trovati"></ul>
+      </div>
+    </section>
+
+    <section class="detail-sec" id="dettaglio" hidden>
+      <div class="wrap" id="detail" tabindex="-1"></div>
+    </section>
+
+    <section class="manual" id="misure">
+      <div class="wrap">
+        <details id="manual-details">
+          <summary>
+            <span>Non trovi il modello? Verifica con le misure</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <form id="manual-form" class="manual-form" autocomplete="off">
+            <p class="manual-intro">Inserisci tipologia e misure del frigorifero attuale (le trovi sul libretto o sulla scheda tecnica). Il risultato è indicativo: la nicchia va sempre misurata.</p>
+            <div class="fields">
+              <label>Tipologia
+                <select id="m-type">
+                  <option value="0">Combinato (freezer in basso)</option>
+                  <option value="2">Doppia porta (freezer in alto)</option>
+                  <option value="1">Monoporta</option>
+                  <option value="3">Sottopiano</option>
+                  <option value="5">Side by side / multiporta</option>
+                </select>
+              </label>
+              <label>Larghezza (cm)
+                <input id="m-w" type="text" inputmode="decimal" placeholder="54" maxlength="6">
+              </label>
+              <label>Altezza (cm)
+                <input id="m-h" type="text" inputmode="decimal" placeholder="177,5" maxlength="6">
+              </label>
+              <button type="submit" class="btn btn-dark">Verifica</button>
+            </div>
+            <p class="form-error" id="m-error" role="alert" hidden></p>
+          </form>
+        </details>
+      </div>
+    </section>
+
+    <section class="range" id="gamma">
+      <div class="wrap">
+        <p class="eyebrow">La gamma</p>
+        <h2>Samsung F1rst da incasso</h2>
+        <p class="lead small">Tre combinati Total No Frost con montaggio a traino, per le nicchie più diffuse.</p>
+        <div class="range-grid" id="range-grid"></div>
+        <p class="footnote" id="fn">* Risparmio fino al 10% con AI Energy Mode secondo test Samsung; i risultati variano in base a condizioni e modalità d'uso. Richiede app SmartThings, connessione Wi-Fi e account Samsung. Dettagli e condizioni sulle schede prodotto di samsung.com.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p class="wordmark small" aria-hidden="true">SAMSUNG</p>
+      <p><strong>Verifica sempre le misure della nicchia</strong> (larghezza × altezza × profondità) prima dell'acquisto: l'elenco riporta le misure del prodotto, non della nicchia. Le indicazioni di compatibilità sono un supporto alla vendita e non sostituiscono il sopralluogo dell'installatore.</p>
+      <p><strong>Nessun dato raccolto.</strong> La ricerca avviene interamente sul tuo dispositivo: niente cookie, niente tracciamento, niente account. Le immagini dei prodotti sono caricate da samsung.com.</p>
+      <p class="muted">Caratteristiche e specifiche sono soggette a modifiche senza preavviso. I marchi citati appartengono ai rispettivi proprietari.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

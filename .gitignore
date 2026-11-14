@@ -1,0 +1,9 @@
+# File sorgente con i dati di mercato: resta solo in locale
+*.xlsx
+~$*
+
+# Locale / strumenti
+.claude/
+.wrangler/
+node_modules/
+__pycache__/
