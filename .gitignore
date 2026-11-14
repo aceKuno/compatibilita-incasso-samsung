@@ -1,4 +1,4 @@
-# File sorgente con i dati di mercato: resta solo in locale
+# File sorgente dei dati: resta solo in locale
 *.xlsx
 ~$*
 

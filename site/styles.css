@@ -52,6 +52,9 @@ h1, h2, h3, p { margin: 0; }
 .topnav a:hover { border-bottom-color: var(--black); }
 
 /* ---------- hero / search ---------- */
+.trial { background: var(--warn-bg); color: var(--warn); font-size: 14px; padding: 10px 0; }
+.trial strong { font-weight: 800; }
+
 .hero { padding: 56px 0 24px; }
 .eyebrow { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 12px; }
 h1 { font-size: clamp(30px, 5.2vw, 52px); line-height: 1.12; font-weight: 800; letter-spacing: -.01em; max-width: 17em; }
