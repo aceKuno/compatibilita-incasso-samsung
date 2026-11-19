@@ -1,13 +1,24 @@
 /* Compatibilità frigoriferi da incasso → Samsung F1rst.
-   Tutto gira nel browser: nessuna richiesta di rete, nessun dato salvato. */
+   Tutto gira nel browser: nessuna richiesta di rete, nessun dato salvato.
+
+   Versione generale: propone la tipologia Samsung (F1rst 60 AI, F1rst 60 AI Plus,
+   F1rst 75 AI) e mostra tutte le versioni F1rst di quella tipologia.
+   Versione retailer (?r=unieuro): propone il modello preciso dell'assortimento. */
 (function () {
   "use strict";
 
   var D = window.FRIDGE_DATA;
   var MAX_ROWS = 60;
-  var IMG = "https://images.samsung.com/is/image/samsung/p6pim/it/";
+  var IMG = "https://images.samsung.com/is/image/samsung/";
   var PDP = "https://www.samsung.com/it/refrigerators/built-in-bottom-mount-freezer/";
   var LABEL = "https://images.samsung.com/is/content/samsung/p6/common/energylabel/common-energylabel-";
+
+  /* ---------- assortimenti retailer ---------- */
+  var RETAILERS = {
+    unieuro: { name: "Unieuro", skus: ["BRB80F26ACS0", "BRB70F30BES0", "BRB38G705DWW"] }
+  };
+  var RKEY = (new URLSearchParams(location.search).get("r") || "").toLowerCase();
+  var RETAILER = RETAILERS[RKEY] || null;
 
   var TYPE_LABEL = [
     "Combinato (freezer in basso)", "Monoporta", "Doppia porta (freezer in alto)",
@@ -21,7 +32,7 @@
     ai: ["AI Energy Mode", "Con SmartThings adatta compressore e sbrinamento alle tue abitudini: fino al 10% di energia in meno*."],
     twin: ["Twin Cooling™", "Frigo e freezer raffreddati in modo indipendente: giusta umidità e nessun odore che si mescola."],
     twinPlus: ["Twin Cooling Plus™", "Due sistemi di raffreddamento indipendenti per frigo e freezer: freschezza più a lungo, odori separati."],
-    coolSelect: ["Cool Select+", "Una zona che cambia funzione con un tocco: da frigo a freezer, da 2° fino a -23°."],
+    coolSelect: ["Cool Select+", "Il freezer cambia funzione con un tocco: anche zona frigo o refrigerazione a -5°, -1° o 2°."],
     optimal2: ["Optimal Fresh+", "Cassetto a due zone: più freddo a sinistra per carne e pesce, a destra frutta e verdura."],
     optimal1: ["Optimal Fresh+", "Cassetto dedicato a carne e pesce, più freddo del resto del frigorifero."],
     metal: ["Metal Cooling", "Il pannello in metallo trattiene il freddo e recupera in fretta la temperatura dopo ogni apertura."],
@@ -32,41 +43,98 @@
     rack: ["Rack & Shelf™", "Ripiano multifunzione: portabottiglie anche per formati grandi, oppure piano d'appoggio."],
     tray: ["Multi Tray", "Vassoio estraibile sotto i ripiani per lattine, uova e piccoli alimenti."],
     light: ["Luci dimmerabili", "Luminosità interna regolabile dall'app, con modalità notte."],
-    smart: ["SmartThings", "Consumi sotto controllo, avvisi di manutenzione e gestione della dispensa dall'app."]
+    smart: ["SmartThings", "Wi-Fi integrato: consumi sotto controllo, avvisi e gestione del frigorifero dall'app."]
+  };
+  /* ordine in cui mostrare le caratteristiche; "chip" = etichetta breve */
+  var FEAT_ORDER = ["ai", "twinPlus", "twin", "coolSelect", "metal", "optimal2", "optimal1", "noFrost", "power", "powerFreeze", "space", "rack", "tray", "light", "smart"];
+  var CHIP = {
+    ai: "AI Energy Mode", twinPlus: "Twin Cooling Plus™", twin: "Twin Cooling™", coolSelect: "Cool Select+",
+    metal: "Metal Cooling", optimal2: "Optimal Fresh+", optimal1: "Optimal Fresh+", noFrost: "Total No Frost",
+    power: "Power Cool", powerFreeze: "Power Freeze", space: "SpaceMax™", rack: "Rack & Shelf™",
+    tray: "Multi Tray", light: "Luci dimmerabili", smart: "Wi-Fi"
   };
 
-  var PRODUCTS = [
-    {
-      sku: "BRB80F26ACS0", name: "F1rst 60 AI", tag: "Nicchia 55 × 178 cm",
-      title: "Frigorifero combinato da incasso 1,78 m, 264 L, Total No Frost",
-      w: 54, h: 177.5, d: 55, cap: 264, cls: "C",
-      img: IMG + "brb80f26acs0ef/gallery/it-brb80f-twc-537143-brb80f26acs0ef-544977110",
-      url: PDP + "brb80f-twc-264l-white-brb80f26acs0ef/",
-      label: LABEL + "brb80f26acs0ef-energylabel.pdf",
-      usps: ["ai", "twin", "coolSelect", "metal", "optimal2", "noFrost", "power", "space", "rack", "smart"],
-      chips: ["AI Energy Mode", "Twin Cooling™", "Cool Select+", "Metal Cooling", "Total No Frost"]
-    },
-    {
-      sku: "BRB70F30BES0EF", name: "F1rst 60 AI Plus", tag: "Nicchia 55 × 194 cm",
-      title: "Frigorifero combinato da incasso 1,94 m, 298 L, Total No Frost",
-      w: 54, h: 193.5, d: 55, cap: 298, cls: "E",
-      img: IMG + "brb70f30bes0ef/gallery/it-brb80f-twc-537141-brb70f30bes0ef-544977088",
-      url: PDP + "brb80f-twc-298l-white-brb70f30bes0ef/",
-      label: LABEL + "brb70f30bes0ef-energylabel.pdf",
-      usps: ["ai", "twin", "coolSelect", "optimal2", "noFrost", "power", "space", "light", "smart"],
-      chips: ["AI Energy Mode", "Twin Cooling™", "Cool Select+", "Optimal Fresh+", "Total No Frost"]
-    },
-    {
-      sku: "BRB38G705DWW", name: "F1rst 75 AI", tag: "Nicchia 70 × 194 cm",
-      title: "Frigorifero combinato da incasso 1,94 m, 389 L, Total No Frost",
-      w: 69, h: 193.5, d: 55, cap: 389, cls: "D",
-      img: IMG + "brb38g705dwwef/gallery/it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-503518-brb38g705dwwef-540943701",
-      url: PDP + "brb6500d-382l-white-brb38g705dwwef/",
-      label: LABEL + "brb38g705dwwef-energylabel.pdf",
-      usps: ["ai", "twinPlus", "optimal1", "metal", "noFrost", "powerFreeze", "space", "tray", "light", "smart"],
-      chips: ["AI Energy Mode", "Twin Cooling Plus™", "Metal Cooling", "Multi Tray", "Total No Frost"]
-    }
+  /* ---------- tipologie Samsung (stesso ordine di data.js → families) ---------- */
+  var FAMILIES = [
+    { name: "F1rst 60 AI", niche: "55 × 178 cm", w: 54, h: 177.5, d: 55, height: "1,78 m" },
+    { name: "F1rst 60 AI Plus", niche: "55 × 194 cm", w: 54, h: 193.5, d: 55, height: "1,94 m" },
+    { name: "F1rst 75 AI", niche: "70 × 194 cm", w: 69, h: 193.5, d: 55, height: "1,94 m" }
   ];
+
+  /* ---------- libreria F1rst (fonte: schede prodotto samsung.com/it) ---------- */
+  function p6(sku, id) { return "p6pim/it/" + sku.toLowerCase() + "ef/gallery/" + id; }
+  var A60 = ["ai", "optimal2", "noFrost", "space", "light", "smart"];
+  var A75 = ["ai", "twinPlus", "coolSelect", "optimal1", "metal", "noFrost", "power", "space", "smart"];
+  var SKUS = [
+    // F1rst 60 AI · 264 L, Twin Cooling
+    { sku: "BRB80F26ACS0", fam: 0, cap: 264, cls: "C", kwh: 148, slug: "brb80f-twc-264l-white-brb80f26acs0ef",
+      img: p6("BRB80F26ACS0", "it--brb80f26acs0ef-550030700"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+    { sku: "BRB80F26BCS0", fam: 0, cap: 264, cls: "C", kwh: 148, slug: "brb80f-twc-264l-white-brb80f26bcs0ef",
+      img: p6("BRB80F26BCS0", "it--brb80f26bcs0ef-550034960"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
+    { sku: "BRB80F26ADS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb80f26ads0ef",
+      img: p6("BRB80F26ADS0", "it--brb80f26ads0ef-550040525"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+    { sku: "BRB80F26BDS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb80f26bds0ef",
+      img: p6("BRB80F26BDS0", "it--brb80f26bds0ef-550036811"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
+    { sku: "BRB70F26BDS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb70f26bds0ef",
+      img: p6("BRB70F26BDS0", "it--brb70f26bds0ef-550035329"), f: A60.concat(["twin", "coolSelect", "power"]) },
+    // F1rst 60 AI · 267 L, raffreddamento singolo
+    { sku: "BRB80F26CES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb80f26ces0ef",
+      img: p6("BRB80F26CES0", "it-brb80f-mono-brb70f26cef0ef-537147-brb80f26ces0ef-544978001"), f: A60.concat(["metal", "powerFreeze", "rack"]) },
+    { sku: "BRB80F26DES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb80f26des0ef",
+      img: p6("BRB80F26DES0", "it-brb80f-mono-brb70f26cef0ef-537148-brb80f26des0ef-544978064"), f: A60.concat(["metal", "powerFreeze"]) },
+    { sku: "BRB70F26CES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb70f26ces0ef",
+      img: p6("BRB70F26CES0", "it-brb80f-mono-brb70f26cef0ef-brb70f26ces0ef-544976994"), f: A60.concat(["powerFreeze", "rack"]) },
+    // F1rst generazione precedente (stessa nicchia 55 × 178)
+    { sku: "BRB260087WW", fam: 0, cap: 266, cls: "G", kwh: 317, prev: true, slug: "266l-snow-white-brb260087ww-ef",
+      label: "brb260087ww-ef", img: "it-bottom-mount-freezer-brb260087ww-brb260087ww-ef-frontivorywhite-61779711",
+      f: ["twinPlus", "coolSelect", "metal", "noFrost", "power", "rack"] },
+    { sku: "BRB260010WW", fam: 0, cap: 268, cls: "G", kwh: 354, prev: true, slug: "268l-snow-white-brb260010ww-ef",
+      label: "brb260010ww-ef", img: "it-bottom-mount-freezer-brb260010ww-brb260010ww-ef-frontwhite-161036082",
+      f: ["noFrost", "powerFreeze"] },
+    // F1rst 60 AI Plus · 298 L
+    { sku: "BRB80F30AES0", fam: 1, cap: 298, cls: "E", kwh: 229, slug: "brb80f-twc-298l-white-brb80f30aes0ef",
+      img: p6("BRB80F30AES0", "it-brb80f-twc-537149-brb80f30aes0ef-544978592"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+    { sku: "BRB70F30BES0", fam: 1, cap: 298, cls: "E", kwh: 229, slug: "brb80f-twc-298l-white-brb70f30bes0ef",
+      img: p6("BRB70F30BES0", "it-brb80f-twc-537141-brb70f30bes0ef-544977088"), f: A60.concat(["twin", "coolSelect", "power"]) },
+    // F1rst 75 AI · 389 L
+    { sku: "BRB38G705DWW", fam: 2, cap: 389, cls: "D", kwh: 206, slug: "brb6500d-382l-white-brb38g705dwwef",
+      img: p6("BRB38G705DWW", "it--brb38g705dwwef-550027866"), f: A75.concat(["tray"]) },
+    { sku: "BRB38G705EWW", fam: 2, cap: 389, cls: "E", kwh: 258, slug: "brb6500d-382l-white-brb38g705ewwef",
+      img: p6("BRB38G705EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-503523-brb38g705ewwef-540944215"), f: A75.concat(["tray"]) },
+    { sku: "BRB38G703EWW", fam: 2, cap: 389, cls: "E", kwh: 258, slug: "brb6500d-382l-white-brb38g703ewwef",
+      img: p6("BRB38G703EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-brb38g703ewwef-540870660"), f: A75 }
+  ];
+  SKUS.forEach(function (p) {
+    var F = FAMILIES[p.fam];
+    p.name = F.name;
+    p.w = F.w; p.h = F.h; p.d = F.d;
+    p.url = PDP + p.slug + "/";
+    p.labelUrl = LABEL + (p.label || p.sku.toLowerCase() + "ef") + "-energylabel.pdf";
+    p.img = IMG + p.img;
+    p.f = FEAT_ORDER.filter(function (k) { return p.f.indexOf(k) >= 0; });
+    if (p.prev) p.name = "F1rst";
+  });
+
+  /* assortimento visibile in questa versione */
+  var VISIBLE = RETAILER
+    ? SKUS.filter(function (p) { return RETAILER.skus.indexOf(p.sku) >= 0; })
+    : SKUS;
+
+  FAMILIES.forEach(function (F, i) {
+    F.skus = VISIBLE.filter(function (p) { return p.fam === i; });
+    var cur = F.skus.filter(function (p) { return !p.prev; });
+    if (!cur.length) cur = F.skus;
+    /* caratteristiche presenti in tutte le versioni attuali = caratteristiche della tipologia */
+    F.common = FEAT_ORDER.filter(function (k) {
+      return cur.length && cur.every(function (p) { return p.f.indexOf(k) >= 0; });
+    });
+    F.lead = cur[0];
+    var caps = cur.map(function (p) { return p.cap; });
+    var cls = cur.map(function (p) { return p.cls; }).sort();
+    F.capText = Math.min.apply(null, caps) === Math.max.apply(null, caps)
+      ? caps[0] + " L" : Math.min.apply(null, caps) + "–" + Math.max.apply(null, caps) + " L";
+    F.clsText = cls[0] === cls[cls.length - 1] ? cls[0] : cls[0] + "–" + cls[cls.length - 1];
+  });
 
   /* ---------- helpers ---------- */
   function $(id) { return document.getElementById(id); }
@@ -117,6 +185,10 @@
     return s + " cm";
   }
 
+  function extLink(cls, href, text) {
+    return el("a", { class: cls, href: href, target: "_blank", rel: "noopener noreferrer", text: text });
+  }
+
   /* ---------- indice di ricerca ---------- */
   var INDEX = D.rows.map(function (r, i) {
     return { i: i, nm: norm(r[1]), nb: norm(r[0]) };
@@ -156,18 +228,20 @@
   function rule(type, w, h) {
     if (type !== 0) {
       var why = type === 1 ? "Monoporta: il mobile cambia"
-        : type === 2 ? "Freezer in alto: il mobile cambia"
+        : type === 2 ? "Freezer in alto (TMF): il mobile cambia"
         : "Tipologia non coperta dalla gamma Samsung da incasso";
-      return { outcome: 2, sku: -1, note: why };
+      return { outcome: 2, fam: -1, note: why };
     }
     var W = roundCm(w), H = roundCm(h);
-    var hOk = H >= 177 && H <= 196;
-    if (W >= 52 && W <= 56 && hOk) return { outcome: 0, sku: H <= 191 ? 0 : 1, note: "" };
-    if (W >= 68 && W <= 71 && hOk) return { outcome: 0, sku: 2, note: "" };
-    var wNear = (W >= 51 && W <= 57) || (W >= 67 && W <= 72);
-    var hNear = H >= 175 && H <= 198;
-    if (wNear && hNear) return { outcome: 1, sku: -1, note: "Misure appena fuori range: misurare la nicchia" };
-    return { outcome: 2, sku: -1, note: "Misure fuori range (" + cm(w) + " x " + cm(h) + " cm)" };
+    if (H >= 176 && H <= 198) {
+      if (W >= 52 && W <= 56) return { outcome: 0, fam: H <= 187 ? 0 : 1, note: "" };
+      if (W >= 67 && W <= 71) return { outcome: 0, fam: 2, note: "" };
+    }
+    var wNear = (W >= 51 && W <= 57) || (W >= 66 && W <= 72);
+    if (wNear && H >= 175 && H <= 199) {
+      return { outcome: 1, fam: -1, note: "Misure appena fuori range (" + cm(w) + " x " + cm(h) + " cm): misurare la nicchia" };
+    }
+    return { outcome: 2, fam: -1, note: "Misure fuori range (" + cm(w) + " x " + cm(h) + " cm)" };
   }
 
   /* ---------- immagini ---------- */
@@ -189,44 +263,104 @@
     return img;
   }
 
-  /* ---------- scheda prodotto Samsung ---------- */
-  function productCard(p) {
-    var specs = el("ul", { class: "specs" },
-      el("li", null, el("b", { text: cm(p.w) + " × " + cm(p.h) + " × " + cm(p.d) }), el("span", { text: "L × A × P (cm)" })),
-      el("li", null, el("b", { text: p.cap + " L" }), el("span", { text: "Capacità totale" })),
-      el("li", null, el("b", { text: "Classe " + p.cls }), el("span", { text: "Efficienza energetica" })),
-      el("li", null, el("b", { text: "A traino" }), el("span", { text: "Montaggio anta" }))
-    );
-    var usps = el("ul", { class: "usps" });
-    p.usps.forEach(function (k) {
-      usps.appendChild(el("li", null, el("b", { text: U[k][0] }), el("span", { text: U[k][1] })));
+  function uspList(keys) {
+    var ul = el("ul", { class: "usps" });
+    keys.forEach(function (k) {
+      ul.appendChild(el("li", null, el("b", { text: U[k][0] }), el("span", { text: U[k][1] })));
     });
+    return ul;
+  }
+
+  function chipList(keys) {
+    var ul = el("ul", { class: "chips" });
+    keys.forEach(function (k) { ul.appendChild(el("li", { text: CHIP[k] })); });
+    return ul;
+  }
+
+  function specGrid(items) {
+    var ul = el("ul", { class: "specs" });
+    items.forEach(function (it) {
+      ul.appendChild(el("li", null, el("b", { text: it[0] }), el("span", { text: it[1] })));
+    });
+    return ul;
+  }
+
+  /* ---------- scheda: modello preciso (versione retailer) ---------- */
+  function productCard(p) {
     return el("article", { class: "product" },
       el("div", { class: "product-media" }, productImage(p, "1164_932")),
       el("div", { class: "product-body" },
-        el("span", { class: "tag", text: "Il Samsung compatibile" }),
+        el("span", { class: "tag", text: RETAILER ? "Disponibile da " + RETAILER.name : "Il Samsung compatibile" }),
         el("h3", { text: "Samsung " + p.name }),
-        el("p", { class: "product-sub", text: p.title }),
+        el("p", { class: "product-sub", text: "Combinato da incasso " + FAMILIES[p.fam].height + ", " + p.cap + " L, Total No Frost" }),
         el("p", { class: "sku", text: p.sku }),
-        specs,
+        specGrid([
+          [cm(p.w) + " × " + cm(p.h) + " × " + cm(p.d), "L × A × P (cm)"],
+          [p.cap + " L", "Capacità totale"],
+          ["Classe " + p.cls, "Efficienza energetica · " + p.kwh + " kWh/anno"],
+          ["A traino", "Montaggio anta"]
+        ]),
         el("p", { class: "usp-title", text: "Perché sceglierlo" }),
-        usps,
+        uspList(p.f),
         el("div", { class: "cta" },
-          el("a", { class: "btn btn-dark", href: p.url, target: "_blank", rel: "noopener noreferrer", text: "Scheda prodotto su samsung.com" }),
-          el("a", { class: "link", href: p.label, target: "_blank", rel: "noopener noreferrer", text: "Etichetta energetica (PDF)" })
+          extLink("btn btn-dark", p.url, "Scheda prodotto su samsung.com"),
+          extLink("link", p.labelUrl, "Etichetta energetica (PDF)")
         )
+      )
+    );
+  }
+
+  /* ---------- scheda: tipologia (versione generale) ---------- */
+  function variantRow(p, common) {
+    var extra = p.f.filter(function (k) { return common.indexOf(k) < 0; });
+    return el("li", { class: "variant" + (p.prev ? " prev" : "") },
+      el("div", { class: "variant-media" }, productImage(p, "330_330")),
+      el("div", { class: "variant-main" },
+        el("p", { class: "variant-sku", text: p.sku }),
+        el("p", { class: "variant-meta", text: p.cap + " L · Classe " + p.cls + (p.prev ? " · generazione precedente" : "") }),
+        extra.length ? chipList(extra) : null
+      ),
+      extLink("variant-link", p.url, "Scheda")
+    );
+  }
+
+  function familyCard(fi) {
+    var F = FAMILIES[fi];
+    var list = el("ul", { class: "variants" });
+    F.skus.forEach(function (p) { list.appendChild(variantRow(p, F.common)); });
+    return el("article", { class: "product" },
+      el("div", { class: "product-media" }, productImage(F.lead, "1164_932")),
+      el("div", { class: "product-body" },
+        el("span", { class: "tag", text: "La tipologia Samsung compatibile" }),
+        el("h3", { text: "Samsung " + F.name }),
+        el("p", { class: "product-sub", text: "Combinato da incasso " + F.height + ", " + F.capText + ", Total No Frost · per nicchie " + F.niche }),
+        specGrid([
+          [cm(F.w) + " × " + cm(F.h) + " × " + cm(F.d), "L × A × P (cm)"],
+          [F.capText, "Capacità totale"],
+          ["Classe " + F.clsText, "Efficienza energetica"],
+          ["A traino", "Montaggio anta"]
+        ]),
+        el("p", { class: "usp-title", text: "Su tutte le versioni" }),
+        uspList(F.common),
+        el("p", { class: "usp-title", text: "Versioni " + F.name + " (" + F.skus.length + ")" }),
+        el("p", { class: "variants-hint", text: "Stesse misure: scegli la versione presente nel tuo assortimento. Le etichette indicano le caratteristiche in più." }),
+        list
       )
     );
   }
 
   /* ---------- esito ---------- */
   function showDetail(o, opts) {
-    var p = o.sku >= 0 ? PRODUCTS[o.sku] : null;
+    var F = o.fam >= 0 ? FAMILIES[o.fam] : null;
+    var p = F && RETAILER ? F.skus[0] : null;
     var cls = OUTCOME_CLASS[o.outcome];
     var headline, text;
     if (o.outcome === 0) {
       headline = "Compatibile";
-      text = "Si sostituisce con Samsung " + p.name + " (" + p.sku + "), nella stessa nicchia.";
+      text = p
+        ? "Si sostituisce con Samsung " + p.name + " (" + p.sku + "), nella stessa nicchia."
+        : "Si sostituisce con un Samsung " + F.name + " (nicchia " + F.niche + "): " +
+          (F.skus.length === 1 ? "una versione disponibile." : F.skus.length + " versioni con le stesse misure.");
     } else if (o.outcome === 1) {
       headline = "Da verificare";
       text = "Le misure sono al limite o non sono disponibili: misura la nicchia e confrontala con la gamma F1rst qui sotto.";
@@ -246,7 +380,8 @@
         el("div", null,
           el("p", { class: "verdict-label", text: "Esito" }),
           el("h2", { text: headline })
-        )
+        ),
+        F ? el("p", { class: "verdict-fam", text: "Samsung " + F.name }) : null
       ),
       el("p", { class: "verdict-text", text: text }),
       el("div", { class: "old" },
@@ -261,6 +396,7 @@
     box.textContent = "";
     box.appendChild(verdict);
     if (p) box.appendChild(productCard(p));
+    else if (F) box.appendChild(familyCard(o.fam));
     else box.appendChild(el("div", { class: "cta" }, el("a", { class: "btn btn-light", href: "#gamma", text: "Vedi la gamma F1rst da incasso" })));
     $("dettaglio").hidden = false;
     if (opts && opts.focus) {
@@ -271,7 +407,7 @@
 
   function fromRow(i) {
     var r = D.rows[i];
-    return { brand: r[0], model: r[1], type: r[2], w: r[3], h: r[4], d: r[5], mount: r[6], sku: r[7], outcome: r[8], note: r[9] };
+    return { brand: r[0], model: r[1], type: r[2], w: r[3], h: r[4], d: r[5], mount: r[6], fam: r[7], outcome: r[8], note: r[9] };
   }
 
   /* ---------- lista risultati ---------- */
@@ -306,7 +442,7 @@
           el("div", { class: "row-model", text: r[1] })
         ),
         el("div", { class: "row-meta", text: TYPE_SHORT[r[2]] + " · " + dims(r[3], r[4], null) }),
-        el("span", { class: "badge " + OUTCOME_CLASS[r[8]], text: D.outcomes[r[8]] }),
+        el("span", { class: "badge " + OUTCOME_CLASS[r[8]], text: r[7] >= 0 ? FAMILIES[r[7]].name : D.outcomes[r[8]] }),
         svg("row-chev", ["m9 6 6 6-6 6"])
       );
       if (h.i === current) btn.setAttribute("aria-current", "true");
@@ -332,28 +468,49 @@
     showDetail(fromRow(i), { focus: focus });
   }
 
-  /* ---------- gamma ---------- */
+  /* ---------- gamma / libreria ---------- */
+  function skuCard(p) {
+    return el("article", { class: "card" + (p.prev ? " prev" : "") },
+      el("div", { class: "card-media" }, productImage(p, "330_330")),
+      el("div", { class: "card-body" },
+        p.prev ? el("p", { class: "card-flag", text: "Generazione precedente" }) : null,
+        el("h4", { text: p.name }),
+        el("p", { class: "sku", text: p.sku }),
+        el("ul", { class: "card-specs" },
+          el("li", null, "Capacità", el("b", { text: p.cap + " L" })),
+          el("li", null, "Classe energetica", el("b", { text: p.cls + " · " + p.kwh + " kWh/anno" }))
+        ),
+        chipList(p.f.filter(function (k) { return ["ai", "twinPlus", "twin", "coolSelect", "metal", "rack", "tray"].indexOf(k) >= 0; })),
+        extLink("btn btn-light", p.url, "Scopri di più")
+      )
+    );
+  }
+
   function renderRange() {
-    var grid = $("range-grid");
-    PRODUCTS.forEach(function (p) {
-      var chips = el("ul", { class: "chips" });
-      p.chips.forEach(function (c) { chips.appendChild(el("li", { text: c })); });
-      grid.appendChild(el("article", { class: "card" },
-        el("div", { class: "card-media" }, productImage(p, "330_330")),
-        el("div", { class: "card-body" },
-          el("h3", { text: p.name }),
-          el("p", { class: "sku", text: p.sku }),
-          el("ul", { class: "card-specs" },
-            el("li", null, "Per nicchie", el("b", { text: p.tag.replace("Nicchia ", "") })),
-            el("li", null, "L × A × P", el("b", { text: cm(p.w) + " × " + cm(p.h) + " × " + cm(p.d) + " cm" })),
-            el("li", null, "Capacità", el("b", { text: p.cap + " L" })),
-            el("li", null, "Classe energetica", el("b", { text: p.cls }))
-          ),
-          chips,
-          el("a", { class: "btn btn-light", href: p.url, target: "_blank", rel: "noopener noreferrer", text: "Scopri di più" })
-        )
+    var wrap = $("range-families");
+    FAMILIES.forEach(function (F) {
+      if (!F.skus.length) return;
+      var grid = el("div", { class: "range-grid" });
+      F.skus.forEach(function (p) { grid.appendChild(skuCard(p)); });
+      wrap.appendChild(el("section", { class: "fam" },
+        el("div", { class: "fam-head" },
+          el("h3", { text: "Samsung " + F.name }),
+          el("p", { text: "Per nicchie " + F.niche + " · " + dims(F.w, F.h, F.d) + " · " + F.capText +
+            (RETAILER ? "" : " · " + F.skus.length + (F.skus.length === 1 ? " versione" : " versioni")) })
+        ),
+        grid
       ));
     });
+  }
+
+  /* ---------- versione retailer ---------- */
+  function applyRetailer() {
+    if (!RETAILER) return;
+    document.title = "Compatibilità frigoriferi da incasso | Samsung F1rst · " + RETAILER.name;
+    $("retailer").textContent = "Assortimento " + RETAILER.name;
+    $("retailer").hidden = false;
+    $("range-lead").textContent = "I Samsung F1rst da incasso disponibili da " + RETAILER.name + ": uno per ciascuna nicchia più diffusa.";
+    $("home").setAttribute("href", "?r=" + RKEY);
   }
 
   /* ---------- eventi ---------- */
@@ -396,10 +553,11 @@
     Array.prototype.forEach.call($("results").querySelectorAll(".row"), function (b) { b.removeAttribute("aria-current"); });
     showDetail({
       brand: "MISURE INSERITE", model: "Frigorifero attuale", type: type, w: w, h: h, d: null,
-      mount: null, sku: res.sku, outcome: res.outcome, note: res.note
+      mount: null, fam: res.fam, outcome: res.outcome, note: res.note
     }, { focus: true });
   });
 
+  applyRetailer();
   renderRange();
 
   var m = /^#q=(.+)$/.exec(location.hash);

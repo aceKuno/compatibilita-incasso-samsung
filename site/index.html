@@ -13,7 +13,10 @@
 <body>
   <header class="topbar">
     <div class="wrap topbar-in">
-      <a class="wordmark" href="./" aria-label="Samsung – torna all'inizio">SAMSUNG</a>
+      <div class="brandbox">
+        <a class="wordmark" id="home" href="./" aria-label="Samsung – torna all'inizio">SAMSUNG</a>
+        <span class="retailer" id="retailer" hidden></span>
+      </div>
       <nav class="topnav" aria-label="Sezioni">
         <a href="#cerca">Verifica compatibilità</a>
         <a href="#gamma">Gamma F1rst</a>
@@ -30,7 +33,7 @@
       <div class="wrap">
         <p class="eyebrow">Frigoriferi da incasso · F1rst</p>
         <h1>Sostituisci il tuo vecchio frigorifero da incasso con un Samsung</h1>
-        <p class="lead">Scrivi il codice modello del frigorifero attuale e scopri subito quale Samsung F1rst entra nella stessa nicchia.</p>
+        <p class="lead">Scrivi il codice modello del frigorifero attuale e scopri subito quale tipologia Samsung F1rst entra nella stessa nicchia.</p>
 
         <form class="search" id="search-form" role="search" autocomplete="off">
           <label for="q" class="sr-only">Codice modello del frigorifero attuale</label>
@@ -96,8 +99,8 @@
       <div class="wrap">
         <p class="eyebrow">La gamma</p>
         <h2>Samsung F1rst da incasso</h2>
-        <p class="lead small">Tre combinati Total No Frost con montaggio a traino, per le nicchie più diffuse.</p>
-        <div class="range-grid" id="range-grid"></div>
+        <p class="lead small" id="range-lead">Tutti i combinati F1rst Total No Frost con montaggio a traino, divisi per tipologia: ogni tipologia corrisponde a una nicchia.</p>
+        <div id="range-families"></div>
         <p class="footnote" id="fn">* Risparmio fino al 10% con AI Energy Mode secondo test Samsung; i risultati variano in base a condizioni e modalità d'uso. Richiede app SmartThings, connessione Wi-Fi e account Samsung. Dettagli e condizioni sulle schede prodotto di samsung.com.</p>
       </div>
     </section>

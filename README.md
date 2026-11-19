@@ -1,9 +1,25 @@
 # Compatibilità frigoriferi da incasso → Samsung F1rst
 
 Sito statico: si scrive il codice del frigorifero da incasso attuale e si vede
-quale Samsung F1rst (BRB80F26ACS0, BRB70F30BES0EF, BRB38G705DWW) lo sostituisce
-nella stessa nicchia, con le caratteristiche principali e il link alla scheda
-prodotto su samsung.com.
+quale tipologia Samsung F1rst lo sostituisce nella stessa nicchia:
+
+| Tipologia        | Nicchia     | Versioni in libreria |
+|------------------|-------------|----------------------|
+| F1rst 60 AI      | 55 × 178 cm | 8 attuali + 2 generazione precedente |
+| F1rst 60 AI Plus | 55 × 194 cm | 2 |
+| F1rst 75 AI      | 70 × 194 cm | 3 |
+
+## Versioni
+
+- **Generale** (`/`): propone la tipologia e mostra tutte le versioni F1rst con le
+  stesse misure, così ogni retailer sceglie quella che ha in assortimento.
+- **Retailer** (`/unieuro`, cioè `/?r=unieuro`): propone direttamente il modello
+  dell'assortimento (Unieuro: BRB80F26ACS0, BRB70F30BES0, BRB38G705DWW) e la gamma
+  mostra solo quei modelli. Per aggiungere un retailer: voce in `RETAILERS` in
+  `site/app.js` e, se serve un link breve, una riga in `site/_redirects`.
+
+La libreria F1rst (`SKUS` in `site/app.js`) è presa dalle schede prodotto di
+samsung.com/it: misure, capacità, classe energetica e caratteristiche.
 
 ## Privacy
 
@@ -23,14 +39,16 @@ site/            sito pubblicato (Cloudflare Pages)
   app.js         ricerca, esito, schede prodotto
   data.js        elenco modelli (generato)
   _headers       header di sicurezza per Cloudflare Pages
+  _redirects     link brevi delle versioni retailer (/unieuro)
 tools/
   build_data.py  rigenera site/data.js dall'Excel
 ```
 
 ## Aggiornare i dati
 
-L'Excel sorgente non è nel repository. Mettilo nella cartella principale con il nome
-`Compatibilita_Frigo_Incasso_Samsung.xlsx`, poi:
+L'Excel sorgente non è nel repository. Mettilo nella cartella principale con un nome
+che inizia per `Compatibilita_Frigo_Incasso_Samsung` (lo script prende il più
+recente, oppure passagli il percorso), poi:
 
 ```bash
 pip install openpyxl
