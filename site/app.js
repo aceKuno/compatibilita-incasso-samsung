@@ -61,48 +61,49 @@
     { name: "F1rst 75 AI", niche: "70 × 194 cm", w: 69, h: 193.5, d: 55, height: "1,94 m" }
   ];
 
-  /* ---------- libreria F1rst (fonte: schede prodotto samsung.com/it) ---------- */
+  /* ---------- libreria F1rst (fonte: schede prodotto samsung.com/it) ----------
+     Foto: vista frontale a porte aperte con alimenti, dalla galleria di ogni scheda. */
   function p6(sku, id) { return "p6pim/it/" + sku.toLowerCase() + "ef/gallery/" + id; }
   var A60 = ["ai", "optimal2", "noFrost", "space", "light", "smart"];
   var A75 = ["ai", "twinPlus", "coolSelect", "optimal1", "metal", "noFrost", "power", "space", "smart"];
   var SKUS = [
     // F1rst 60 AI · 264 L, Twin Cooling
     { sku: "BRB80F26ACS0", fam: 0, cap: 264, cls: "C", kwh: 148, slug: "brb80f-twc-264l-white-brb80f26acs0ef",
-      img: p6("BRB80F26ACS0", "it--brb80f26acs0ef-550030700"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+      img: p6("BRB80F26ACS0", "it-brb80f-twc-537143-brb80f26acs0ef-544977113"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
     { sku: "BRB80F26BCS0", fam: 0, cap: 264, cls: "C", kwh: 148, slug: "brb80f-twc-264l-white-brb80f26bcs0ef",
-      img: p6("BRB80F26BCS0", "it--brb80f26bcs0ef-550034960"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
+      img: p6("BRB80F26BCS0", "it-brb80f-twc-537145-brb80f26bcs0ef-544977204"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
     { sku: "BRB80F26ADS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb80f26ads0ef",
-      img: p6("BRB80F26ADS0", "it--brb80f26ads0ef-550040525"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+      img: p6("BRB80F26ADS0", "it-brb80f-twc-537144-brb80f26ads0ef-544977160"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
     { sku: "BRB80F26BDS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb80f26bds0ef",
-      img: p6("BRB80F26BDS0", "it--brb80f26bds0ef-550036811"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
+      img: p6("BRB80F26BDS0", "it-brb80f-twc-537146-brb80f26bds0ef-544977242"), f: A60.concat(["twin", "coolSelect", "metal", "power"]) },
     { sku: "BRB70F26BDS0", fam: 0, cap: 264, cls: "D", kwh: 185, slug: "brb80f-twc-264l-white-brb70f26bds0ef",
-      img: p6("BRB70F26BDS0", "it--brb70f26bds0ef-550035329"), f: A60.concat(["twin", "coolSelect", "power"]) },
+      img: p6("BRB70F26BDS0", "it-brb80f-twc-brb70f26bds0ef-544976882"), f: A60.concat(["twin", "coolSelect", "power"]) },
     // F1rst 60 AI · 267 L, raffreddamento singolo
     { sku: "BRB80F26CES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb80f26ces0ef",
-      img: p6("BRB80F26CES0", "it-brb80f-mono-brb70f26cef0ef-537147-brb80f26ces0ef-544978001"), f: A60.concat(["metal", "powerFreeze", "rack"]) },
+      img: p6("BRB80F26CES0", "it-brb80f-mono-brb70f26cef0ef-537147-brb80f26ces0ef-544977981"), f: A60.concat(["metal", "powerFreeze", "rack"]) },
     { sku: "BRB80F26DES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb80f26des0ef",
-      img: p6("BRB80F26DES0", "it-brb80f-mono-brb70f26cef0ef-537148-brb80f26des0ef-544978064"), f: A60.concat(["metal", "powerFreeze"]) },
+      img: p6("BRB80F26DES0", "it-brb80f-mono-brb70f26cef0ef-537148-brb80f26des0ef-544978046"), f: A60.concat(["metal", "powerFreeze"]) },
     { sku: "BRB70F26CES0", fam: 0, cap: 267, cls: "E", kwh: 231, slug: "brb80f-mono-brb70f26cef0ef-267l-white-brb70f26ces0ef",
-      img: p6("BRB70F26CES0", "it-brb80f-mono-brb70f26cef0ef-brb70f26ces0ef-544976994"), f: A60.concat(["powerFreeze", "rack"]) },
+      img: p6("BRB70F26CES0", "it-brb80f-mono-brb70f26cef0ef-brb70f26ces0ef-544976974"), f: A60.concat(["powerFreeze", "rack"]) },
     // F1rst generazione precedente (stessa nicchia 55 × 178)
     { sku: "BRB260087WW", fam: 0, cap: 266, cls: "G", kwh: 317, prev: true, slug: "266l-snow-white-brb260087ww-ef",
-      label: "brb260087ww-ef", img: "it-bottom-mount-freezer-brb260087ww-brb260087ww-ef-frontivorywhite-61779711",
+      label: "brb260087ww-ef", img: "it-bottom-mount-freezer-brb260087ww-brb260087ww-ef-frontopenfoodivorywhite-61779685",
       f: ["twinPlus", "coolSelect", "metal", "noFrost", "power", "rack"] },
     { sku: "BRB260010WW", fam: 0, cap: 268, cls: "G", kwh: 354, prev: true, slug: "268l-snow-white-brb260010ww-ef",
-      label: "brb260010ww-ef", img: "it-bottom-mount-freezer-brb260010ww-brb260010ww-ef-frontwhite-161036082",
+      label: "brb260010ww-ef", img: "it-bottom-mount-freezer-brb260010ww-brb260010ww-ef-frontopenwithfoodwhite-161036070",
       f: ["noFrost", "powerFreeze"] },
     // F1rst 60 AI Plus · 298 L
     { sku: "BRB80F30AES0", fam: 1, cap: 298, cls: "E", kwh: 229, slug: "brb80f-twc-298l-white-brb80f30aes0ef",
-      img: p6("BRB80F30AES0", "it-brb80f-twc-537149-brb80f30aes0ef-544978592"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
+      img: p6("BRB80F30AES0", "it-brb80f-twc-537149-brb80f30aes0ef-544978571"), f: A60.concat(["twin", "coolSelect", "metal", "power", "rack"]) },
     { sku: "BRB70F30BES0", fam: 1, cap: 298, cls: "E", kwh: 229, slug: "brb80f-twc-298l-white-brb70f30bes0ef",
-      img: p6("BRB70F30BES0", "it-brb80f-twc-537141-brb70f30bes0ef-544977088"), f: A60.concat(["twin", "coolSelect", "power"]) },
+      img: p6("BRB70F30BES0", "it-brb80f-twc-537141-brb70f30bes0ef-544977063"), f: A60.concat(["twin", "coolSelect", "power"]) },
     // F1rst 75 AI · 389 L
     { sku: "BRB38G705DWW", fam: 2, cap: 389, cls: "D", kwh: 206, slug: "brb6500d-382l-white-brb38g705dwwef",
-      img: p6("BRB38G705DWW", "it--brb38g705dwwef-550027866"), f: A75.concat(["tray"]) },
+      img: p6("BRB38G705DWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-503518-brb38g705dwwef-542156494"), f: A75.concat(["tray"]) },
     { sku: "BRB38G705EWW", fam: 2, cap: 389, cls: "E", kwh: 258, slug: "brb6500d-382l-white-brb38g705ewwef",
-      img: p6("BRB38G705EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-503523-brb38g705ewwef-540944215"), f: A75.concat(["tray"]) },
+      img: p6("BRB38G705EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-503523-brb38g705ewwef-542160899"), f: A75.concat(["tray"]) },
     { sku: "BRB38G703EWW", fam: 2, cap: 389, cls: "E", kwh: 258, slug: "brb6500d-382l-white-brb38g703ewwef",
-      img: p6("BRB38G703EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-brb38g703ewwef-540870660"), f: A75 }
+      img: p6("BRB38G703EWW", "it-built-in-bottom-mount-freezer-smartthings-ai-energy-mode-and-metal-cooling-brb38g703ewwef-542155733"), f: A75 }
   ];
   SKUS.forEach(function (p) {
     var F = FAMILIES[p.fam];
