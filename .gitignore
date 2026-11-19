@@ -2,6 +2,10 @@
 *.xlsx
 ~$*
 
+# Font e logo Samsung: proprietari, si pubblicano sul sito ma non nel repo pubblico
+site/fonts/
+site/brand/
+
 # Locale / strumenti
 .claude/
 .wrangler/

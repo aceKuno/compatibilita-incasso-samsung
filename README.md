@@ -44,6 +44,14 @@ tools/
   build_data.py  rigenera site/data.js dall'Excel
 ```
 
+## Font e logo
+
+Il sito usa i font Samsung SS Head / SS Body e il lettermark ufficiale, secondo il
+Samsung Typographic Playbook 2025 (Head sopra i 18 pt, Body sotto; titoli Head Bold,
+testi Body Regular, enfasi Body Bold, disclaimer Body Light). Sono file proprietari:
+stanno in `site/fonts/` e `site/brand/` solo in locale e vengono pubblicati sul sito,
+ma non sono nel repository. Senza quei file il sito usa i font di sistema.
+
 ## Aggiornare i dati
 
 L'Excel sorgente non è nel repository. Mettilo nella cartella principale con un nome
